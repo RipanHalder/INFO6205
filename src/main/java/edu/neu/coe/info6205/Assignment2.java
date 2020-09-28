@@ -79,7 +79,7 @@ public class Assignment2 {
     	//run the benchmark for various values of n and different array types. store results in a csv file.
     	try {
 			FileWriter writer = new FileWriter("results/insertion_sort/results.csv");
-			writer.write("n, Random, Sorted, Reverse Sorted, Partially Sorted\n");
+			writer.write("n,Random,Sorted,ReverseSorted,PartiallySorted\n");
 			for(int size=INITIAL_VALUE_OF_N;size<=INITIAL_VALUE_OF_N*Math.pow(2, DOUBLING_N_COUNT);size=size*2) {
 		    	ArrayList<Integer[]> inputs = generateAnArray(size,MAX_NO_IN_ARRAY,MIN_NO_IN_ARRAY);
 		    	writer.write(size+",");
