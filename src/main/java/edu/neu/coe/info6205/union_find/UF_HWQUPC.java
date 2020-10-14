@@ -88,12 +88,13 @@ public class UF_HWQUPC implements UF {
     	validate(p);
         int root = p;
         while (root != parent[root]) {
+        	if(pathCompression) parent[root] = parent[parent[root]]; 
             root = parent[root];
         }
         if (!pathCompression) {
             return root;
         }
-        doPathCompression(p, root, parent);
+//        doPathCompression(p, root, parent);
         return root;
     }
 
@@ -199,11 +200,7 @@ public class UF_HWQUPC implements UF {
         // TO BE IMPLEMENTED update parent to value of grandparent
     	int root = find(i);
     	
-    	while (i != root) {
-            int temp = parent[i];
-            parent[i] = root;
-            i = temp;
-        }
+    	parent[root] = parent[parent[root]];
     }
     
     static void doPathCompression(int p, int root, int[] parent) {
@@ -217,28 +214,30 @@ public class UF_HWQUPC implements UF {
         }
     }
     
-    public static void main(String args[]) {
-
-    	try {
-			FileWriter writer = new FileWriter("results/union_find/assignment3.csv");
-			writer.write("N,PairsM\n");
-
-			int initialN = 10;
-			int numberOfNs = 7;
-			int numberOfRunsForEveryN = 1000;
-			for(int i=0;i<numberOfNs;i++) {
-				System.out.println(i);
-				int a = (int)Math.pow(2, i);
-				a = a*initialN;
-				writer.write(a+",");
-				writer.write(findNumberOfPairs(a,numberOfRunsForEveryN)+"\n");
-			}
-			writer.close();
-    	}
-    	catch (IOException e) {
-    		e.printStackTrace();
-    	}
-    }
+    // Uncomment this to run Assignment 3
+    
+//    public static void main(String args[]) {
+//
+//    	try {
+//			FileWriter writer = new FileWriter("results/union_find/assignment3.csv");
+//			writer.write("N,PairsM\n");
+//
+//			int initialN = 10;
+//			int numberOfNs = 7;
+//			int numberOfRunsForEveryN = 1000;
+//			for(int i=0;i<numberOfNs;i++) {
+//				System.out.println(i);
+//				int a = (int)Math.pow(2, i);
+//				a = a*initialN;
+//				writer.write(a+",");
+//				writer.write(findNumberOfPairs(a,numberOfRunsForEveryN)+"\n");
+//			}
+//			writer.close();
+//    	}
+//    	catch (IOException e) {
+//    		e.printStackTrace();
+//    	}
+//    }
     
     private static int[] genrateRandomPair(int n) {
 		int[] pair = new int[2];
@@ -263,4 +262,17 @@ public class UF_HWQUPC implements UF {
 		}
 		return (int)(sum/runs);
 	}
+	
+	public double avgDepth() {
+    	double res = 0;
+    	for(int i =0;i<parent.length;i++) {
+    		int temp = i;
+    		while(parent[temp]!=temp) {
+    			res=res+1;
+    			temp = parent[temp];
+    		}
+    	}
+    	res = res/parent.length;
+    	return res;
+    }
 }

@@ -6,7 +6,7 @@ package edu.neu.coe.info6205.union_find;
 /**
  * Weighted Quick Union with Path Compression
  */
-public class WQUPC {
+public class WQUPC implements UF{
     private final int[] parent;   // parent[i] = parent of i
     private final int[] size;   // size[i] = size of subtree rooted at i
     private int count;  // number of components
@@ -40,7 +40,7 @@ public class WQUPC {
      *
      * @return the number of components (between {@code 1} and {@code n})
      */
-    public int count() {
+    public int components() {
         return count;
     }
 
@@ -64,6 +64,17 @@ public class WQUPC {
         }
         return root;
     }
+    
+    @Override
+    public void connect(int p, int q) {
+        if (!isConnected(p, q)) union(p, q);
+    }
+
+
+	@Override
+	public int size() {
+		return parent.length;
+	}
 
     // validate that p is a valid index
     private void validate(int p) {
@@ -109,6 +120,24 @@ public class WQUPC {
             size[rootP] += size[rootQ];
         }
         count--;
+    }
+    
+    /**
+     * Find the average distance from all nodes from root after union find is completed.
+     */ 
+    
+    public double avgDepth() {
+    	double res=0;
+    	for(int i =0;i <parent.length;i++) {
+    		int temp = i;
+    		
+    		while(parent[temp]!=temp) {
+    			res=res+1;
+    			temp = parent[temp];
+    		}
+    	}
+    	res = res/parent.length;
+    	return res;
     }
 
 }
